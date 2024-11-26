@@ -1,3 +1,36 @@
 <resources>
     <string name="app_name">GestiGlove</string>
+
+    <!-- Textos para la pantalla de inicio de sesión -->
+    <string name="titulo_inicio_sesion">Iniciar Sesión</string>
+    <string name="campo_correo_inicio">Correo electrónico</string>
+    <string name="campo_contrasena_inicio">Contraseña</string>
+    <string name="texto_olvido_contrasena">¿Has olvidado tu contraseña?</string>
+    <string name="boton_inicio_sesion">Iniciar Sesión</string>
+    <string name="texto_registrarse_inicio">¿No tienes una cuenta? Regístrate</string>
+
+    <!-- Textos para la pantalla de registro -->
+    <string name="titulo_registro">Registro</string>
+    <string name="campo_nombre_registro">Nombre completo</string>
+    <string name="campo_correo_registro">Correo electrónico</string>
+    <string name="campo_contrasena_registro">Contraseña</string>
+    <string name="boton_registro">Registrarse</string>
+    <string name="texto_iniciar_sesion_registro">¿Ya tienes una cuenta? Inicia sesión</string>
+
+    <!-- Textos genéricos -->
+    <string name="error_generico">Ocurrió un error. Inténtalo nuevamente.</string>
+    <string name="mensaje_cargando">Cargando...</string>
+
+    <!-- Errores en inicio de sesión -->
+    <string name="error_credenciales_invalidas">Las credenciales no coinciden.</string>
+    <string name="error_no_se_puede_iniciar">No se pudo iniciar sesión. Inténtalo más tarde.</string>
+
+    <!-- Errores en registro -->
+    <string name="error_contrasena_corta">La contraseña debe tener al menos 6 caracteres.</string>
+    <string name="error_correo_invalido">Por favor, introduce un correo válido.</string>
+    <string name="error_correo_en_uso">El correo ya está registrado.</string>
+    <string name="error_no_se_puede_registrar">No se pudo completar el registro. Inténtalo más tarde.</string>
+
+    <!-- Mensajes de éxito -->
+    <string name="mensaje_registro_exitoso">Registro completado.</string>
 </resources>
