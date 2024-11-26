@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.GestiGlove" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.GestiGlove" parent="android:Theme.Material.Light.NoActionBar" >
+        <item name="android:windowBackground">@color/black</item>
+    </style>
+
+    <!-- Tema para el SplashScreen -->
+    <style name="Theme.GestiGlove.Splash" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen_background</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
 </resources>

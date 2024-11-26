@@ -69,4 +69,6 @@ dependencies {
 
     // Navegación para Jetpack Compose
     implementation(libs.androidx.navigation.compose)
+    // Dependencia para Material Components
+    implementation (libs.material)
 }
