@@ -69,6 +69,7 @@ dependencies {
 
     // Navegación para Jetpack Compose
     implementation(libs.androidx.navigation.compose)
+    implementation("androidx.compose.material:material-icons-extended:1.7.5")
     // Dependencia para Material Components
     implementation (libs.material)
 }
