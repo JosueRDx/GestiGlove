@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.josuerdx.gestiglove.screens.home.HomeScreen
 import com.josuerdx.gestiglove.screens.inicio_sesion.LoginScreen
 import com.josuerdx.gestiglove.screens.registro.RegisterScreen
 
@@ -19,11 +20,16 @@ fun AppNavigation(navController: NavHostController) {
     ) {
         // Ruta para inicio de sesión
         composable(NavigationRoutes.Login.route) {
-            LoginScreen(onNavigateToRegister = {
-                navController.navigate(NavigationRoutes.Register.route) {
-                    popUpTo(NavigationRoutes.Login.route) { inclusive = false }
+            LoginScreen(
+                onNavigateToRegister = {
+                    navController.navigate(NavigationRoutes.Register.route)
+                },
+                onNavigateToHome = {
+                    navController.navigate(NavigationRoutes.Home.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
                 }
-            })
+            )
         }
 
         // Ruta para registro
@@ -33,6 +39,10 @@ fun AppNavigation(navController: NavHostController) {
                     popUpTo(NavigationRoutes.Register.route) { inclusive = false }
                 }
             })
+        }
+
+        composable(NavigationRoutes.Home.route) {
+            HomeScreen()
         }
     }
 }

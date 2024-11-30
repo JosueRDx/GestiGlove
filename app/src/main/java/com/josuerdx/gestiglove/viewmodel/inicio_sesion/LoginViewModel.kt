@@ -1,8 +1,10 @@
 package com.josuerdx.gestiglove.viewmodel.inicio_sesion
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.josuerdx.gestiglove.repository.AuthRepository
+import com.josuerdx.gestiglove.utils.messages.ErrorMessages
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -13,21 +15,31 @@ import kotlinx.coroutines.launch
  */
 class LoginViewModel(private val repository: AuthRepository) : ViewModel() {
 
-    // Estado de la UI
     private val _uiState = MutableStateFlow<LoginUiState>(LoginUiState.Idle)
     val uiState: StateFlow<LoginUiState> = _uiState
 
-    /**
-     * Realiza el inicio de sesión llamando al repositorio.
-     * Actualiza el estado de la UI según el resultado.
-     * @param email Correo ingresado por el usuario.
-     * @param password Contraseña ingresada por el usuario.
-     */
-    fun login(email: String, password: String) {
+    fun login(email: String, password: String, context: Context) {
         _uiState.value = LoginUiState.Loading
         viewModelScope.launch {
-            val success = repository.login(email, password)
-            _uiState.value = if (success) LoginUiState.Success else LoginUiState.Error("Credenciales inválidas.")
+            kotlinx.coroutines.delay(1000)
+            _uiState.value = when {
+                email.isBlank() || password.isBlank() -> {
+                    LoginUiState.Error(ErrorMessages.invalidCredentials(context))
+                }
+                repository.login(email, password) -> {
+                    syncPendingUsers()
+                    LoginUiState.Success
+                }
+                else -> {
+                    LoginUiState.Error(ErrorMessages.invalidCredentials(context))
+                }
+            }
+        }
+    }
+
+    fun syncPendingUsers() {
+        viewModelScope.launch {
+            repository.syncPendingUsers()
         }
     }
 }

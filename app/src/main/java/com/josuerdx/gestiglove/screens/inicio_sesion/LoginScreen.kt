@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -22,25 +23,37 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.josuerdx.gestiglove.GestiGloveApp
 import com.josuerdx.gestiglove.R
 import com.josuerdx.gestiglove.repository.AuthRepository
 import com.josuerdx.gestiglove.viewmodel.inicio_sesion.LoginViewModel
 import com.josuerdx.gestiglove.viewmodel.inicio_sesion.LoginUiState
 import com.josuerdx.gestiglove.viewmodel.inicio_sesion.LoginViewModelFactory
+import androidx.compose.runtime.livedata.observeAsState
 
 /**
  * Pantalla de inicio de sesión.
  * @param onNavigateToRegister Función para navegar a la pantalla de registro.
+ * @param onNavigateToHome Función para navegar a la pantalla de home.
  */
 @Composable
 fun LoginScreen(
-    onNavigateToRegister: () -> Unit
+    onNavigateToRegister: () -> Unit,
+    onNavigateToHome: () -> Unit
 ) {
     // Crear instancia de LoginViewModel con su factory personalizada
-    val repository = remember { AuthRepository() }
+    val context = LocalContext.current
+    val repository = remember { AuthRepository(context) }
     val viewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(repository))
 
     val uiState by viewModel.uiState.collectAsState()
+    val isOnline = (context.applicationContext as GestiGloveApp).isOnline.observeAsState(false)
+
+    LaunchedEffect(isOnline.value) {
+        if (isOnline.value == true) {
+            viewModel.syncPendingUsers()
+        }
+    }
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -107,7 +120,7 @@ fun LoginScreen(
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
-                onDone = { viewModel.login(email, password) }
+                onDone = { viewModel.login(email, password, context) }
             ),
             trailingIcon = {
                 val icon = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
@@ -121,7 +134,7 @@ fun LoginScreen(
 
         // Botón para iniciar sesión
         Button(
-            onClick = { viewModel.login(email, password) },
+            onClick = { viewModel.login(email, password, context) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = stringResource(R.string.boton_inicio_sesion))
@@ -136,19 +149,24 @@ fun LoginScreen(
 
         // Manejo del estado de la UI
         when (uiState) {
-            is LoginUiState.Loading -> CircularProgressIndicator()
+            is LoginUiState.Loading -> {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(vertical = 16.dp)
+                )
+            }
             is LoginUiState.Error -> Text(
                 text = (uiState as LoginUiState.Error).message,
                 color = MaterialTheme.colorScheme.error,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
-            is LoginUiState.Success -> Text(
-                text = "Inicio de sesión exitoso!",
-                color = MaterialTheme.colorScheme.primary,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
+            is LoginUiState.Success -> {
+                LaunchedEffect(Unit) {
+                    onNavigateToHome()
+                }
+            }
             else -> {}
         }
     }
@@ -159,7 +177,8 @@ fun LoginScreen(
 fun LoginScreenPreview() {
     MaterialTheme {
         LoginScreen(
-            onNavigateToRegister = {}
+            onNavigateToRegister = {},
+            onNavigateToHome = {}
         )
     }
 }
