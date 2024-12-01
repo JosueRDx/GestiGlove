@@ -12,8 +12,8 @@ val Typography = Typography(
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
-        fontSize = 22.sp,
-        lineHeight = 28.sp
+        fontSize = 24.sp,
+        lineHeight = 30.sp
     ),
     // Estilos para subtítulos medianos
     titleMedium = TextStyle(
