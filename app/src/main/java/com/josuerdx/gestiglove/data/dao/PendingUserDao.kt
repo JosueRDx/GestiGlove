@@ -29,4 +29,10 @@ interface PendingUserDao {
      */
     @Delete
     suspend fun deleteUser(user: PendingUser)
+
+    /**
+     * Borra todos los usuarios pendientes de la base de datos.
+     */
+    @Query("DELETE FROM pending_users")
+    suspend fun deleteAllPendingUsers()
 }

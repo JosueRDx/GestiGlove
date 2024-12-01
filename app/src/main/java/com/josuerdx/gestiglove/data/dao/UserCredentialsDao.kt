@@ -23,4 +23,10 @@ interface UserCredentialsDao {
      */
     @Query("SELECT * FROM user_credentials WHERE email = :email")
     suspend fun getCredentialsByEmail(email: String): UserCredentials?
+
+    /**
+     * Borra todas las credenciales de la base de datos.
+     */
+    @Query("DELETE FROM user_credentials")
+    suspend fun deleteAllCredentials()
 }

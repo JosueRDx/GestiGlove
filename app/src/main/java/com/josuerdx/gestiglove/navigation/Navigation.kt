@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.josuerdx.gestiglove.repository.ThemeRepository
+import com.josuerdx.gestiglove.screens.help.HelpScreen
 import com.josuerdx.gestiglove.screens.home.HomeScreen
 import com.josuerdx.gestiglove.screens.inicio_sesion.LoginScreen
 import com.josuerdx.gestiglove.screens.menu.MenuScreen
@@ -64,7 +66,23 @@ fun AppNavigation(navController: NavHostController) {
                 selectedRoute = NavigationRoutes.Settings.route,
                 navController = navController
             ) { paddingValues ->
-                SettingsScreen(paddingValues)
+                val themeRepository = ThemeRepository.getInstance(navController.context)
+                SettingsScreen(
+                    paddingValues = paddingValues,
+                    navController = navController,
+                    themeRepository = themeRepository
+                )
+            }
+        }
+
+        // Ruta para pantalla Ayuda
+        composable(NavigationRoutes.Help.route) {
+            BaseScreenWrapper(
+                title = "Ayuda",
+                selectedRoute = "",
+                navController = navController
+            ) {
+                HelpScreen()
             }
         }
 

@@ -10,8 +10,10 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.josuerdx.gestiglove.repository.ThemeRepository
 import com.josuerdx.gestiglove.ui.theme.GestiGloveTheme
 
 /**
@@ -82,7 +84,8 @@ fun AnimatedNavigationBar(
 @Preview(showBackground = true)
 @Composable
 fun AnimatedNavigationBarPreview() {
-    GestiGloveTheme {
+    val themeRepository = ThemeRepository.getInstance(LocalContext.current)
+    GestiGloveTheme(themeRepository = themeRepository)  {
         AnimatedNavigationBar(
             selectedRoute = "home",
             onProfileClick = {},

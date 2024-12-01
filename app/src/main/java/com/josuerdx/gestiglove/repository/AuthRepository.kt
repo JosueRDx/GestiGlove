@@ -8,7 +8,7 @@ import com.josuerdx.gestiglove.data.model.UserCredentials
 import kotlinx.coroutines.tasks.await
 import java.security.MessageDigest
 
-class AuthRepository(context: Context) {
+class AuthRepository(private val context: Context) {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val userCredentialsDao = AppDatabase.getDatabase(context).userCredentialsDao()
@@ -44,6 +44,48 @@ class AuthRepository(context: Context) {
         val hashedPassword = hashPassword(password)
         val credentials = UserCredentials(email, hashedPassword)
         userCredentialsDao.insertCredentials(credentials)
+    }
+
+    /**
+     * Cierra sesión del usuario.
+     */
+    suspend fun logout() {
+        try {
+            auth.signOut()
+            clearUserPreferences()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * Elimina la cuenta del usuario actual y borra los datos locales.
+     */
+    suspend fun deleteAccount() {
+        try {
+            auth.currentUser?.delete()?.await()
+            clearUserPreferences()
+            clearLocalUserData()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * Limpia las preferencias del usuario.
+     */
+    private fun clearUserPreferences() {
+        val sharedPreferences =
+            context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        sharedPreferences.edit().clear().apply()
+    }
+
+    /**
+     * Limpia los datos locales.
+     */
+    private suspend fun clearLocalUserData() {
+        userCredentialsDao.deleteAllCredentials()
+        pendingUserDao.deleteAllPendingUsers()
     }
 
     /**

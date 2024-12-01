@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import com.josuerdx.gestiglove.repository.ThemeRepository
 import com.josuerdx.gestiglove.ui.theme.GestiGloveTheme
 
 /**
@@ -46,7 +48,8 @@ fun AppBaseLayout(
 @Preview(showBackground = true)
 @Composable
 fun AppBaseLayoutPreview() {
-    GestiGloveTheme {
+    val themeRepository = ThemeRepository.getInstance(LocalContext.current)
+    GestiGloveTheme(themeRepository = themeRepository)  {
         AppBaseLayout(
             title = "GestiGlove",
             selectedRoute = "home",

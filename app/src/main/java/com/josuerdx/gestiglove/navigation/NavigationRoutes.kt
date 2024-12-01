@@ -10,4 +10,5 @@ sealed class NavigationRoutes(val route: String) {
     object Menu : NavigationRoutes("menu")
     object Profile : NavigationRoutes("profile")
     object Settings : NavigationRoutes("settings")
+    object Help : NavigationRoutes("help")
 }

@@ -6,8 +6,10 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.josuerdx.gestiglove.repository.ThemeRepository
 import com.josuerdx.gestiglove.ui.theme.GestiGloveTheme
 
 /**
@@ -43,7 +45,8 @@ fun TopBar(
 @Preview(showBackground = true)
 @Composable
 fun TopBarPreview() {
-    GestiGloveTheme {
+    val themeRepository = ThemeRepository.getInstance(LocalContext.current)
+    GestiGloveTheme(themeRepository = themeRepository)  {
         TopBar(
             title = "GestiGlove",
             onSettingsClick = {}
