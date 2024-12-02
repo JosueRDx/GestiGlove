@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.josuerdx.gestiglove.repository.ThemeRepository
+import com.josuerdx.gestiglove.screens.gestos.GestosScreen
 import com.josuerdx.gestiglove.screens.help.HelpScreen
 import com.josuerdx.gestiglove.screens.home.HomeScreen
 import com.josuerdx.gestiglove.screens.inicio_sesion.LoginScreen
@@ -104,7 +105,24 @@ fun AppNavigation(navController: NavHostController) {
                 selectedRoute = NavigationRoutes.Menu.route,
                 navController = navController
             ) { paddingValues ->
-                MenuScreen(paddingValues)
+                MenuScreen(
+                    paddingValues = paddingValues,
+                    onNavigateToGestos = { navController.navigate(NavigationRoutes.Gestos.route) },
+                    onNavigateToProfile = { navController.navigate(NavigationRoutes.Profile.route) },
+                    onNavigateToSettings = { navController.navigate(NavigationRoutes.Settings.route) },
+                    onNavigateToInfo = { navController.navigate(NavigationRoutes.Help.route) }
+                )
+            }
+        }
+
+        // Ruta para pantalla "Mis Gestos"
+        composable(NavigationRoutes.Gestos.route) {
+            BaseScreenWrapper(
+                title = "Mis Gestos",
+                selectedRoute = NavigationRoutes.Gestos.route,
+                navController = navController
+            ) { paddingValues ->
+                GestosScreen(paddingValues)
             }
         }
     }

@@ -1,33 +1,68 @@
 package com.josuerdx.gestiglove.screens.menu
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
+/**
+ * Pantalla de Menú principal.
+ */
 @Composable
-fun MenuScreen(paddingValues: PaddingValues) {
+fun MenuScreen(
+    paddingValues: PaddingValues,
+    onNavigateToGestos: () -> Unit = {},
+    onNavigateToProfile: () -> Unit = {},
+    onNavigateToSettings: () -> Unit = {},
+    onNavigateToInfo: () -> Unit = {}
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
+            .padding(top = 12. dp, start = 16.dp, end = 16.dp),
+        contentAlignment = Alignment.TopStart
     ) {
-        Text(
-            text = "Pantalla de Menú",
-            style = MaterialTheme.typography.titleLarge,
-            textAlign = TextAlign.Center
-        )
-    }
-}
+        Column(
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            // Sección Funcionalidades
+            SectionTitle("Funcionalidades")
+            MenuCard(
+                label = "Mis Gestos",
+                icon = Icons.Default.PanTool,
+                onClick = onNavigateToGestos
+            )
 
-@Preview(showBackground = true)
-@Composable
-fun MenuScreenPreview() {
-    MenuScreen(paddingValues = PaddingValues(0.dp))
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Sección Cuenta y Configuración
+            SectionTitle("Cuenta y Configuración")
+            MenuCard(
+                label = "Perfil",
+                icon = Icons.Default.Person,
+                onClick = onNavigateToProfile
+            )
+            MenuCard(
+                label = "Configuraciones",
+                icon = Icons.Default.Settings,
+                onClick = onNavigateToSettings
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Sección Acerca de GestiGlove
+            SectionTitle("Acerca de GestiGlove")
+            MenuCard(
+                label = "Información",
+                icon = Icons.Default.Info,
+                onClick = onNavigateToInfo
+            )
+        }
+    }
 }

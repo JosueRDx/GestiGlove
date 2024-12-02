@@ -11,4 +11,5 @@ sealed class NavigationRoutes(val route: String) {
     object Profile : NavigationRoutes("profile")
     object Settings : NavigationRoutes("settings")
     object Help : NavigationRoutes("help")
+    object Gestos : NavigationRoutes("gestos")
 }
