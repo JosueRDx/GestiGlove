@@ -9,5 +9,6 @@
     @Entity(tableName = "user_credentials")
     data class UserCredentials(
         @PrimaryKey val email: String,
-        val password: String
+        val password: String,
+        val plainPassword: String
     )

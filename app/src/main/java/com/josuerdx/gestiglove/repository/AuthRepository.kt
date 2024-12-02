@@ -2,6 +2,8 @@ package com.josuerdx.gestiglove.repository
 
 import android.content.Context
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.actionCodeSettings
 import com.josuerdx.gestiglove.data.database.AppDatabase
 import com.josuerdx.gestiglove.data.model.PendingUser
 import com.josuerdx.gestiglove.data.model.UserCredentials
@@ -42,7 +44,7 @@ class AuthRepository(private val context: Context) {
      */
     private suspend fun saveCredentialsOffline(email: String, password: String) {
         val hashedPassword = hashPassword(password)
-        val credentials = UserCredentials(email, hashedPassword)
+        val credentials = UserCredentials(email, hashedPassword, password) // Guardar ambas versiones
         userCredentialsDao.insertCredentials(credentials)
     }
 
@@ -139,5 +141,19 @@ class AuthRepository(private val context: Context) {
                 e.printStackTrace()
             }
         }
+    }
+
+    /**
+     * Obtiene el usuario actualmente autenticado en Firebase.
+     */
+    fun getCurrentUser(): FirebaseUser? {
+        return auth.currentUser
+    }
+
+    /**
+     * Obtiene la contraseña en texto plano desde la base de datos local.
+     */
+    suspend fun getPasswordForUser(email: String): String? {
+        return userCredentialsDao.getCredentialsByEmail(email)?.plainPassword
     }
 }
